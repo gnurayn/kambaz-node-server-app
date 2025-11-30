@@ -24,6 +24,7 @@ export default function CoursesDao(db) {
     }
     function updateCourse(courseId, courseUpdates) {
         return model.updateOne({ _id: courseId }, { $set: courseUpdates });
+
     }
 
     return { findAllCourses, findCoursesForEnrolledUser, createCourse, deleteCourse, updateCourse };
