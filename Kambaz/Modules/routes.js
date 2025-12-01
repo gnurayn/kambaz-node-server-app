@@ -8,6 +8,7 @@ export default function ModulesRoutes(app, db) {
     }
     const createModuleForCourse = async (req, res) => {
         try {
+            const { courseId } = req.params;
             const module = { ...req.body };
             const newModule = await dao.createModule(courseId, module);
             res.send(newModule);

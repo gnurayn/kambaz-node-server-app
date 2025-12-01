@@ -12,7 +12,6 @@ export default function ModulesDao(db) {
             { _id: courseId },
             { $push: { modules: newModule } }
         );
-
         return newModule;
     }
     async function deleteModule(courseId, moduleId) {
