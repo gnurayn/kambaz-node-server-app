@@ -4,22 +4,11 @@ export default function CoursesDao(db) {
     function findAllCourses() {
         return model.find({}, { name: 1, description: 1, image: 1 });
     }
-    async function findCoursesForEnrolledUser(userId) {
-        const { enrollments } = db;
-        const courses = await model.find({}, { name: 1, description: 1, image: 1 });
-        const enrolledCourses = courses.filter((course) =>
-            enrollments.some((enrollment) => enrollment.user === userId && enrollment.course === course._id));
-        return enrolledCourses;
-    }
     function createCourse(course) {
         const newCourse = { ...course, _id: uuidv4() };
         return model.create(newCourse);
     }
     function deleteCourse(courseId) {
-        const { enrollments } = db;
-        db.enrollments = enrollments.filter(
-            (enrollment) => enrollment.course !== courseId
-        );
         return model.deleteOne({ _id: courseId });
     }
     function updateCourse(courseId, courseUpdates) {
@@ -27,5 +16,5 @@ export default function CoursesDao(db) {
 
     }
 
-    return { findAllCourses, findCoursesForEnrolledUser, createCourse, deleteCourse, updateCourse };
+    return { findAllCourses, createCourse, deleteCourse, updateCourse };
 }
