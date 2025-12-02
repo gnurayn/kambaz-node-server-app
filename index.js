@@ -11,6 +11,7 @@ import AssignmentsRoutes from "./Kambaz/Assignments/routes.js";
 import EnrollmentsRoutes from './Kambaz/Enrollments/routes.js';
 import "dotenv/config";
 import session from "express-session";
+import MongoStore from 'connect-mongo';
 
 const CONNECTION_STRING = process.env.DATABASE_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kambaz"
 mongoose.connect(CONNECTION_STRING);
@@ -41,6 +42,11 @@ const sessionOptions = {
     secret: process.env.SESSION_SECRET || "kambaz",
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: process.env.DATABASE_CONNECTION_STRING,
+        collectionName: 'sessions',
+        ttl: 24 * 60 * 60
+    })
 };
 if (process.env.SERVER_ENV !== "development") {
     sessionOptions.proxy = true;
