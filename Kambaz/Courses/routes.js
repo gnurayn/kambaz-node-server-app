@@ -39,11 +39,16 @@ export default function CourseRoutes(app, db) {
         const status = await dao.updateCourse(courseId, courseUpdates);
         res.send(status);
     };
-
+    const findUsersForCourse = async (req, res) => {
+        const { cid } = req.params;
+        const users = await enrollmentsDao.findUsersForCourse(cid);
+        res.json(users);
+    };
 
     app.get("/api/courses", findAllCourses);
     app.get("/api/users/:userId/courses", findCoursesForEnrolledUser);
     app.post("/api/users/current/courses", createCourse);
     app.delete("/api/courses/:courseId", deleteCourse);
     app.put("/api/courses/:courseId", updateCourse);
+    app.get("/api/courses/:cid/users", findUsersForCourse);
 }
