@@ -1,9 +1,11 @@
 import CoursesDao from "./dao.js";
 import EnrollmentsDao from "../Enrollments/dao.js";
+import { authenticate, canEditCourse } from "../Users/middleware.js";
 
 export default function CourseRoutes(app, db) {
     const dao = CoursesDao(db);
     const enrollmentsDao = EnrollmentsDao(db);
+
     const createCourse = async (req, res) => {
         const currentUser = req.session["currentUser"];
         const newCourse = await dao.createCourse(req.body);
@@ -47,8 +49,9 @@ export default function CourseRoutes(app, db) {
 
     app.get("/api/courses", findAllCourses);
     app.get("/api/users/:userId/courses", findCoursesForEnrolledUser);
-    app.post("/api/users/current/courses", createCourse);
-    app.delete("/api/courses/:courseId", deleteCourse);
-    app.put("/api/courses/:courseId", updateCourse);
     app.get("/api/courses/:cid/users", findUsersForCourse);
+
+    app.post("/api/users/current/courses", authenticate, canEditCourse, createCourse);
+    app.delete("/api/courses/:courseId", authenticate, canEditCourse, deleteCourse);
+    app.put("/api/courses/:courseId", authenticate, canEditCourse, updateCourse);
 }

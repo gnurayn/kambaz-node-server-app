@@ -1,4 +1,6 @@
 import AssignmentsDao from "../Assignments/dao.js";
+import { authenticate, canEditCourse } from "../Users/middleware.js";
+
 export default function AssignmentsRoutes(app, db) {
     const dao = AssignmentsDao(db);
     const findAssignmentsForCourse = async (req, res) => {
@@ -37,7 +39,7 @@ export default function AssignmentsRoutes(app, db) {
     }
 
     app.get("/api/courses/:courseId/assignments", findAssignmentsForCourse);
-    app.post("/api/courses/:courseId/assignments", createAssignmentForCourse);
-    app.delete("/api/assignments/:assignmentId", deleteAssignment);
-    app.put("/api/assignments/:assignmentId", updateAssignment);
+    app.post("/api/courses/:courseId/assignments", authenticate, canEditCourse, createAssignmentForCourse);
+    app.delete("/api/assignments/:assignmentId", authenticate, canEditCourse, deleteAssignment);
+    app.put("/api/assignments/:assignmentId", authenticate, canEditCourse, updateAssignment);
 }

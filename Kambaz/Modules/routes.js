@@ -1,4 +1,6 @@
 import ModulesDao from "../Modules/dao.js";
+import { authenticate, canEditCourse } from "../Users/middleware.js";
+
 export default function ModulesRoutes(app, db) {
     const dao = ModulesDao(db);
     const findModulesForCourse = async (req, res) => {
@@ -29,9 +31,8 @@ export default function ModulesRoutes(app, db) {
         res.send(status);
     }
 
-
     app.get("/api/courses/:courseId/modules", findModulesForCourse);
-    app.post("/api/courses/:courseId/modules", createModuleForCourse);
-    app.delete("/api/courses/:courseId/modules/:moduleId", deleteModule);
-    app.put("/api/courses/:courseId/modules/:moduleId", updateModule);
+    app.post("/api/courses/:courseId/modules", authenticate, canEditCourse, createModuleForCourse);
+    app.delete("/api/courses/:courseId/modules/:moduleId", authenticate, canEditCourse, deleteModule);
+    app.put("/api/courses/:courseId/modules/:moduleId", authenticate, canEditCourse, updateModule);
 }
