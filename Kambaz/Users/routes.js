@@ -1,6 +1,6 @@
 import UsersDao from "./dao.js";
 import jwt from 'jsonwebtoken';
-import { authenticate } from './middleware.js';
+import { authenticate } from './middleware-jwt.js';
 let currentUser = null;
 export default function UserRoutes(app) {
     const dao = UsersDao();
