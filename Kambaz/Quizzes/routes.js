@@ -1,5 +1,5 @@
 import QuizzesDao from "./dao.js";
-import { authenticate, canEditCourse } from "../Users/middleware.js";
+import { authenticate, canEditCourse } from "../Users/middleware-jwt.js";
 
 export default function QuizRoutes(app, db) {
     const dao = QuizzesDao(db);
