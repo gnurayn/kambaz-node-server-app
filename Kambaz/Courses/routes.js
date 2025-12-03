@@ -1,6 +1,6 @@
 import CoursesDao from "./dao.js";
 import EnrollmentsDao from "../Enrollments/dao.js";
-import { authenticate, canEditCourse } from "../Users/middleware.js";
+import { authenticate, canEditCourse } from "../Users/middleware-jwt.js";
 
 export default function CourseRoutes(app, db) {
     const dao = CoursesDao(db);

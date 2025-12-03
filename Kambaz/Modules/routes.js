@@ -1,5 +1,5 @@
 import ModulesDao from "../Modules/dao.js";
-import { authenticate, canEditCourse } from "../Users/middleware.js";
+import { authenticate, canEditCourse } from "../Users/middleware-jwt.js";
 
 export default function ModulesRoutes(app, db) {
     const dao = ModulesDao(db);

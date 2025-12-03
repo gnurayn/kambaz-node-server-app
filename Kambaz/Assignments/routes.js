@@ -1,5 +1,5 @@
 import AssignmentsDao from "../Assignments/dao.js";
-import { authenticate, canEditCourse } from "../Users/middleware.js";
+import { authenticate, canEditCourse } from "../Users/middleware-jwt.js";
 
 export default function AssignmentsRoutes(app, db) {
     const dao = AssignmentsDao(db);
