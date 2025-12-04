@@ -56,6 +56,7 @@ export default function QuizRoutes(app, db) {
     const deleteQuiz = async (req, res) => {
         try {
             const { quizId } = req.params;
+            console.log("🗑️ Attempting to delete quiz:", quizId);
             const status = await dao.deleteQuiz(quizId);
             res.sendStatus(204);
         } catch (error) {

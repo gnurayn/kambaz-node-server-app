@@ -25,6 +25,8 @@ export default function QuizzesDao(db) {
     }
 
     function deleteQuiz(quizId) {
+        console.log("🗑️ DAO: Deleting quiz with _id:", quizId);
+        console.log("🗑️ DAO: ID type:", typeof quizId);
         return model.deleteOne({ _id: quizId });
     }
 
