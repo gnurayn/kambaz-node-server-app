@@ -38,7 +38,22 @@ export default function AssignmentsRoutes(app, db) {
         res.send(status);
     }
 
+    const findAssignmentById = async (req, res) => {
+        try {
+            const { assignmentId } = req.params;
+            const assignment = await dao.findAssignmentById(assignmentId);
+            if (!assignment) {
+                return res.status(404).json({ message: "Assignment not found" });
+            }
+            res.json(assignment);
+        } catch (err) {
+            console.error("Error fetching assignment:", err);
+            res.status(500).json({ message: err.message });
+        }
+    };
+
     app.get("/api/courses/:courseId/assignments", findAssignmentsForCourse);
+    app.get("/api/assignments/:assignmentId", findAssignmentById);
     app.post("/api/courses/:courseId/assignments", authenticate, canEditCourse, createAssignmentForCourse);
     app.delete("/api/assignments/:assignmentId", authenticate, canEditCourse, deleteAssignment);
     app.put("/api/assignments/:assignmentId", authenticate, canEditCourse, updateAssignment);
