@@ -1,13 +1,11 @@
 import mongoose from "mongoose";
 
 const answerSchema = new mongoose.Schema({
-    id: String,
     text: String,
     isCorrect: Boolean
 }, { _id: false });
 
 const questionSchema = new mongoose.Schema({
-    _id: { type: String },
     type: { type: String, default: "multiple-choice" },
     title: String,
     points: { type: Number, default: 0 },
