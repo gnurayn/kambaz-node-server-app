@@ -1,5 +1,20 @@
 import mongoose from "mongoose";
 
+const answerSchema = new mongoose.Schema({
+    id: String,
+    text: String,
+    isCorrect: Boolean
+}, { _id: false });
+
+const questionSchema = new mongoose.Schema({
+    _id: { type: String },
+    type: { type: String, default: "multiple-choice" },
+    title: String,
+    points: { type: Number, default: 0 },
+    question: String,
+    answers: [answerSchema]
+}, { _id: false });
+
 const quizSchema = new mongoose.Schema(
     {
         _id: { type: String },
@@ -24,10 +39,13 @@ const quizSchema = new mongoose.Schema(
         availableUntilDate: String,
         availableUntilTime: String,
         published: { type: Boolean, default: false },
-        questionCount: { type: Number, default: 0 }
+        questionCount: { type: Number, default: 0 },
+        questions: [questionSchema]
     },
-    { collection: "quizzes",
-        _id: false }
+    {
+        collection: "quizzes",
+        _id: false
+    }
 );
 
-export default quizSchema;
+export default mongoose.model("QuizModel", quizSchema);
