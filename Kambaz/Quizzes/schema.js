@@ -10,7 +10,8 @@ const questionSchema = new mongoose.Schema({
     title: String,
     points: { type: Number, default: 0 },
     question: String,
-    answers: [answerSchema]
+    answers: [answerSchema],
+    correctAnswer: { type: Boolean }
 }, { _id: false });
 
 const quizSchema = new mongoose.Schema(
