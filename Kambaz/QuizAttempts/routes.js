@@ -65,7 +65,7 @@ export default function QuizAttemptRoutes(app, db) {
                 return res.status(400).json({ message: "Maximum attempts reached" });
             }
 
-            // Calculate score
+            // Calculate Score
             const { answers } = req.body;
             let totalPoints = 0;
             let earnedPoints = 0;
