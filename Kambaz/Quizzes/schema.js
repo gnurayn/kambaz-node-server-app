@@ -11,7 +11,8 @@ const questionSchema = new mongoose.Schema({
     points: { type: Number, default: 0 },
     question: String,
     answers: [answerSchema],
-    correctAnswer: Boolean
+    correctAnswer: Boolean,
+    possibleAnswers: [String],
 }, { _id: false });
 
 const quizSchema = new mongoose.Schema(
