@@ -38,7 +38,7 @@ const quizSchema = new mongoose.Schema(
         availableUntilTime: String,
         published: { type: Boolean, default: false },
         questionCount: { type: Number, default: 0 },
-        questions: [questionSchema]
+        questions: { type: [questionSchema], default: [] }
     },
     {
         collection: "quizzes",
@@ -46,4 +46,4 @@ const quizSchema = new mongoose.Schema(
     }
 );
 
-export default mongoose.model("QuizModel", quizSchema);
+export default quizSchema;
