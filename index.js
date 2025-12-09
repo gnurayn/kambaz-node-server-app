@@ -10,7 +10,7 @@ import ModulesRoutes from "./Kambaz/Modules/routes.js";
 import AssignmentsRoutes from "./Kambaz/Assignments/routes.js";
 import EnrollmentsRoutes from './Kambaz/Enrollments/routes.js';
 import QuizRoutes from "./Kambaz/Quizzes/routes.js";
-import QuizAttemptRoutes from "./Database/QuizAttempts/routes.js";
+import QuizAttemptRoutes from "./Kambaz/QuizAttempts/routes.js";
 import "dotenv/config";
 import session from "express-session";
 import MongoStore from 'connect-mongo';
