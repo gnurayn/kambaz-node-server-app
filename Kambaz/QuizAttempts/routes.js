@@ -1,5 +1,5 @@
 import QuizAttemptsDao from "./dao.js";
-import QuizzesDao from "../quizzes/dao.js";
+import QuizzesDao from "../Quizzes/dao.js";
 import { authenticate } from "../Users/middleware-jwt.js";
 
 export default function QuizAttemptRoutes(app, db) {
