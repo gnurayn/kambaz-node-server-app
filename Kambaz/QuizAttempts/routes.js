@@ -1,15 +1,15 @@
 import QuizAttemptsDao from "./dao.js";
 import QuizzesDao from "../quizzes/dao.js";
+import { authenticate } from "../Users/middleware-jwt.js";
 
 export default function QuizAttemptRoutes(app, db) {
     const attemptsDao = QuizAttemptsDao(db);
     const quizzesDao = QuizzesDao(db);
 
-    // Get student's attempts for a quiz
     const getStudentAttempts = async (req, res) => {
         try {
             const { quizId } = req.params;
-            const studentId = req.session?.user?._id;
+            const studentId = req.currentUser?._id;
 
             if (!studentId) {
                 return res.status(401).json({ message: "Unauthorized" });
@@ -23,17 +23,19 @@ export default function QuizAttemptRoutes(app, db) {
         }
     };
 
-    // Get latest attempt
     const getLatestAttempt = async (req, res) => {
         try {
             const { quizId } = req.params;
-            const studentId = req.session?.user?._id;
+            const studentId = req.currentUser?._id;
 
             if (!studentId) {
                 return res.status(401).json({ message: "Unauthorized" });
             }
 
             const attempt = await attemptsDao.findLatestAttempt(quizId, studentId);
+            if (!attempt) {
+                return res.status(404).json({ message: "No attempts found" });
+            }
             res.json(attempt);
         } catch (error) {
             console.error("Error fetching latest attempt:", error);
@@ -41,23 +43,20 @@ export default function QuizAttemptRoutes(app, db) {
         }
     };
 
-    // Submit quiz attempt
     const submitAttempt = async (req, res) => {
         try {
             const { quizId } = req.params;
-            const studentId = req.session?.user?._id;
+            const studentId = req.currentUser?._id;
 
             if (!studentId) {
                 return res.status(401).json({ message: "Unauthorized" });
             }
 
-            // Get quiz details
             const quiz = await quizzesDao.findQuizById(quizId);
             if (!quiz) {
                 return res.status(404).json({ message: "Quiz not found" });
             }
 
-            // Check attempt count
             const attemptCount = await attemptsDao.countAttempts(quizId, studentId);
             const maxAttempts = quiz.multipleAttempts ? (quiz.allowedAttempts || 1) : 1;
 
@@ -65,7 +64,6 @@ export default function QuizAttemptRoutes(app, db) {
                 return res.status(400).json({ message: "Maximum attempts reached" });
             }
 
-            // Calculate Score
             const { answers } = req.body;
             let totalPoints = 0;
             let earnedPoints = 0;
@@ -124,7 +122,7 @@ export default function QuizAttemptRoutes(app, db) {
         }
     };
 
-    app.get("/api/quizzes/:quizId/attempts", getStudentAttempts);
-    app.get("/api/quizzes/:quizId/attempts/latest", getLatestAttempt);
-    app.post("/api/quizzes/:quizId/attempts", submitAttempt);
+    app.get("/api/quizzes/:quizId/attempts", authenticate, getStudentAttempts);
+    app.get("/api/quizzes/:quizId/attempts/latest", authenticate, getLatestAttempt);
+    app.post("/api/quizzes/:quizId/attempts", authenticate, submitAttempt);
 }
