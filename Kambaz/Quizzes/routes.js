@@ -58,15 +58,15 @@ export default function QuizRoutes(app, db) {
     const deleteQuiz = async (req, res) => {
         try {
             const { quizId } = req.params;
-            console.log("🗑️ Attempting to delete quiz:", quizId);
+            console.log("Attempting to delete quiz:", quizId);
 
             await attemptsDao.deleteAttemptsByQuizId(quizId);
-            console.log("🗑️ Deleted all attempts for quiz");
+            console.log("Deleted all attempts for quiz");
 
             const result = await dao.deleteQuiz(quizId);
 
-            console.log("🗑️ Delete result:", result);
-            console.log("🗑️ Deleted count:", result.deletedCount);
+            console.log("Delete result:", result);
+            console.log("Deleted count:", result.deletedCount);
 
             if (result.deletedCount === 0) {
                 return res.status(404).json({ message: "Quiz not found" });
@@ -74,7 +74,7 @@ export default function QuizRoutes(app, db) {
 
             res.sendStatus(204);
         } catch (error) {
-            console.error("❌ Error deleting quiz:", error);
+            console.error("Error deleting quiz:", error);
             res.status(500).json({ message: "Failed to delete quiz" });
         }
     };

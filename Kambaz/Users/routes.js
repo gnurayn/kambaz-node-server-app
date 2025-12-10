@@ -44,7 +44,7 @@ export default function UserRoutes(app) {
 
     const signup = async (req, res) => {
         try {
-            console.log("🔐 SIGNUP:", req.body.username, "Role:", req.body.role);
+            console.log("SIGNUP:", req.body.username, "Role:", req.body.role);
 
             const user = await dao.findUserByUsername(req.body.username);
             if (user) {
@@ -63,17 +63,17 @@ export default function UserRoutes(app) {
                 { expiresIn: '24h' }
             );
 
-            console.log("✅ User created with token");
+            console.log("User created with token");
             res.json({ user: currentUser, token });
         } catch (error) {
-            console.error("❌ Signup error:", error);
+            console.error("Signup error:", error);
             res.status(500).json({ message: "Signup failed" });
         }
     };
 
     const signin = async (req, res) => {
         try {
-            console.log("🔐 SIGNIN:", req.body.username);
+            console.log("SIGNIN:", req.body.username);
 
             const { username, password } = req.body;
             const currentUser = await dao.findUserByCredentials(username, password);
@@ -89,14 +89,14 @@ export default function UserRoutes(app) {
                     { expiresIn: '24h' }
                 );
 
-                console.log("✅ Token created for:", currentUser.username);
+                console.log("Token created for:", currentUser.username);
                 res.json({ user: currentUser, token });
             } else {
-                console.log("❌ Invalid credentials");
+                console.log("Invalid credentials");
                 res.status(401).json({ message: "Unable to login. Try again later." });
             }
         } catch (error) {
-            console.error("❌ Signin error:", error);
+            console.error("Signin error:", error);
             res.status(500).json({ message: "Signin failed" });
         }
     };
