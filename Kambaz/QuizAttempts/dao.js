@@ -24,11 +24,17 @@ export default function QuizAttemptsDao(db) {
         return model.findById(attemptId);
     }
 
+    function deleteAttemptsByQuizId(quizId) {
+        return model.deleteMany({ quiz: quizId });
+    }
+
+
     return {
         findAttemptsByStudent,
         findLatestAttempt,
         countAttempts,
         createAttempt,
-        findAttemptById
+        findAttemptById,
+        deleteAttemptsByQuizId
     };
 }

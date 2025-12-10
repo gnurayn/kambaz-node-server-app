@@ -1,8 +1,10 @@
 import QuizzesDao from "./dao.js";
+import QuizAttemptsDao from "../QuizAttempts/dao.js";
 import { authenticate, canEditCourse } from "../Users/middleware-jwt.js";
 
 export default function QuizRoutes(app, db) {
     const dao = QuizzesDao(db);
+    const attemptsDao = QuizAttemptsDao(db);
 
     const findQuizzesForCourse = async (req, res) => {
         try {
@@ -57,6 +59,9 @@ export default function QuizRoutes(app, db) {
         try {
             const { quizId } = req.params;
             console.log("🗑️ Attempting to delete quiz:", quizId);
+
+            await attemptsDao.deleteAttemptsByQuizId(quizId);
+            console.log("🗑️ Deleted all attempts for quiz");
 
             const result = await dao.deleteQuiz(quizId);
 
