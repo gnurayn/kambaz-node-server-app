@@ -24,15 +24,12 @@ app.use(cors({
         if (!origin) {
             return callback(null, true);
         }
-        // Allow localhost for development
         if (origin === 'http://localhost:3000') {
             return callback(null, true);
         }
-        // Allow all Vercel deployments
         if (origin && origin.endsWith('.vercel.app')) {
             return callback(null, true);
         }
-        // Fallback to CLIENT_URL
         if (origin === process.env.CLIENT_URL) {
             return callback(null, true);
         }

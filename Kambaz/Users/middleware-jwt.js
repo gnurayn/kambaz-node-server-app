@@ -22,7 +22,6 @@ export const authenticate = async (req, res, next) => {
             role: decoded.role
         };
 
-        // Backwards compatibility
         if (!req.session) req.session = {};
         req.session["currentUser"] = req.currentUser;
 
